@@ -24,9 +24,6 @@
 <script src="<?= base_url() ?>assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
 <script src="<?= base_url() ?>assets/modules/jquery-ui/jquery-ui.min.js"></script>
 
-<!-- Page Specific JS File -->
-<script src="<?= base_url() ?>assets/js/page/modules-datatables.js"></script>
-
 <!-- Template JS File -->
 <script src="<?= base_url() ?>assets/js/scripts.js"></script>
 <script src="<?= base_url() ?>assets/js/custom.js"></script>
