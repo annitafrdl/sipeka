@@ -19,7 +19,7 @@
             <li class="dropdown">
                 <a href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>Transaksi</span></a>
                 <ul class="dropdown-menu">
-                    <li><a class="nav-link" href="<?= base_url() ?>tarnsaksi">Form Input</a></li>
+                    <li><a class="nav-link" href="<?= base_url() ?>transaksi">Form Input</a></li>
                 </ul>
             </li>
             <li class="dropdown">
