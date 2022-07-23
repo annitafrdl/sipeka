@@ -17,7 +17,7 @@ class Transaksi extends CI_Controller
     public function index()
     {
         $data['title'] = 'Input Transaksi';
-        $data['module'] = 'user/';
+        $data['module'] = 'transaksi/';
 
         // templates
         $this->load->view('template/header', $data);
@@ -26,9 +26,27 @@ class Transaksi extends CI_Controller
         $this->load->view('template/footer', $data);
     }
 
+    public function getList()
+    {
+        $list = $this->models->getList();
+
+        $no = 0;
+        $row = '';
+        foreach ($list as $dd) {
+            $no++;
+
+            $row .= '<a class="list-group-item list-group-item-action" id="' . $dd->thn_bln . '" data-toggle="list" onclick="getDatatable(' . "'" . $dd->thn_bln . "'" . ')" role="tab">' . $dd->thn_bln .
+                ' <span class="badge badge-info badge-pill">1</span> <i class="fa fa-trash text-danger ml-5" onclick="hapus_data(' . "'" . $dd->id_thn_bln . "'" . ')"></i> 
+                    </a>';
+        }
+
+        echo json_encode($row);
+    }
+
     public function ajax_list()
     {
-        $list = $this->models->get_datatables();
+        $thnbln = $this->input->post('thnbln');
+        $list = $this->models->get_datatables($thnbln);
         // print_r($list);
 
         $data = array();
@@ -36,19 +54,20 @@ class Transaksi extends CI_Controller
         foreach ($list as $dd) {
             $no++;
             $row = array();
+            $detail = $this->models->get_detail($dd->id_transaksi);
 
             $row[] = $no;
-            $row[] = $dd->nama;
-            $row[] = $dd->nik;
-            $row[] = $dd->username;
-            $row[] = $dd->alamat;
-            $row[] = $dd->nohp;
-            $row[] = $dd->status;
-            $row[] = $dd->role;
+            $row[] = 'Ke ' . $dd->minggu;
+            $row[] = date('d-m-Y', strtotime($dd->tgl));
+            $row[] = $detail['nama'];
+            $row[] = $detail['kas_masuk'];
+            $row[] = $dd->persentase_pengelola . ' %';
+            $row[] = $dd->persentase_petugas . ' %';
+            $row[] = 'Rp. ' . number_format($dd->jumlah, 0, ',', '.');
 
             // add html for action
-            $row[] = '<button class="btn btn-primary" title="Edit" onclick="edit(' . "'" . $dd->id_user . "'" . ')">Edit</button>
-            <button class="btn btn-danger" title="Hapus" onclick="hapus(' . "'" . $dd->id_user . "'" . ')">Hapus</button>';
+            $row[] = '<button class="btn btn-primary" title="Edit" onclick="edit(' . "'" . $dd->id_transaksi . "'" . ')">Edit</button>
+            <button class="btn btn-danger" title="Hapus" onclick="hapus(' . "'" . $dd->id_transaksi . "'" . ')">Hapus</button>';
 
             $data[] = $row;
         }
@@ -58,19 +77,31 @@ class Transaksi extends CI_Controller
 
     public function ajax_add()
     {
+        // echo $this->input->post('i_thn_bln');
+        // exit;
         $data = array(
-            'nama' => $this->input->post('nama'),
-            'nik' => $this->input->post('nik'),
-            'username' => $this->input->post('username'),
-            'nohp' => $this->input->post('nohp'),
-            'password' => $this->input->post('password'),
-            'alamat' => $this->input->post('alamat'),
-            'nohp' => $this->input->post('nohp'),
-            'role' => $this->input->post('role'),
-            'status' => $this->input->post('status'),
+            'thn_bln' => $this->input->post('i_thn_bln'),
+            'minggu' => $this->input->post('minggu'),
+            'tgl' => $this->input->post('tgl'),
+            'persentase_pengelola' => $this->input->post('persentase_pengelola'),
+            'persentase_petugas' => $this->input->post('persentase_petugas'),
+            'pengeluaran' => $this->input->post('pengeluaran'),
+            'jumlah' => $this->input->post('jumlah'),
+            'jumlah_pengelola' => $this->input->post('jumlah_pengelola'),
+            'jumlah_petugas' => $this->input->post('jumlah_petugas'),
         );
 
-        $result = $this->models->insert($data);
+        $result = $this->models->insert_trans($data);
+        echo json_encode($result);
+    }
+
+    public function ajax_add_thnbln()
+    {
+        $data = array(
+            'thn_bln' => $this->input->post('thn_bln'),
+        );
+
+        $result = $this->models->insert($data, 'thn_bln');
         echo json_encode($result);
     }
 
@@ -83,18 +114,18 @@ class Transaksi extends CI_Controller
     public function ajax_update()
     {
         $data = array(
-            'nama' => $this->input->post('nama'),
-            'nik' => $this->input->post('nik'),
-            'username' => $this->input->post('username'),
-            'nohp' => $this->input->post('nohp'),
-            'password' => $this->input->post('password'),
-            'alamat' => $this->input->post('alamat'),
-            'nohp' => $this->input->post('nohp'),
-            'role' => $this->input->post('role'),
-            'status' => $this->input->post('status'),
+            'thn_bln' => $this->input->post('i_thn_bln'),
+            'minggu' => $this->input->post('minggu'),
+            'tgl' => $this->input->post('tgl'),
+            'persentase_pengelola' => $this->input->post('persentase_pengelola'),
+            'persentase_petugas' => $this->input->post('persentase_petugas'),
+            'pengeluaran' => $this->input->post('pengeluaran'),
+            'jumlah' => $this->input->post('jumlah'),
+            'jumlah_pengelola' => $this->input->post('jumlah_pengelola'),
+            'jumlah_petugas' => $this->input->post('jumlah_petugas'),
         );
 
-        $result = $this->models->update(array('id_user' => $this->input->post('id')), $data);
+        $result = $this->models->update(array('id_transaksi' => $this->input->post('id')), $data);
         echo json_encode($result);
     }
 
@@ -102,5 +133,34 @@ class Transaksi extends CI_Controller
     {
         $result = $this->models->delete_by_id($id);
         echo json_encode($result);
+    }
+
+    public function ajax_delete_thnbln($id)
+    {
+        $result = $this->models->delete_by_id_thnbln($id);
+        echo json_encode($result);
+    }
+
+    public function get_from_jenis_kas()
+    {
+        $list = $this->models->get_from_jenis_kas();
+
+        $data = '';
+        foreach ($list as $dd) {
+
+            $data .= '<input type="hidden" name="id_jenis_kas[]" value="' . $dd->id_jenis_kas . '">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="kas_masuk"> Kas Masuk ' . $dd->nama . ' </label>
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text"> Rp. </div>
+                                    <input type="number" class="form-control jlh" name="kas_masuk[]">
+                                </div>
+                            </div>
+                        </div>';
+        }
+
+        echo json_encode($data);
+        // echo json_encode($list);
     }
 }
