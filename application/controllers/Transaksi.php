@@ -168,7 +168,7 @@ class Transaksi extends CI_Controller
                                 <label for="kas_masuk"> Kas Masuk ' . $dd->nama . ' </label>
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"> Rp. </div>
-                                    <input type="number" class="form-control jlh" name="kas_masuk[]">
+                                    <input type="number" class="form-control jlh" name="kas_masuk[]" id="' . str_replace(' ', '_', strtolower($dd->nama)) . '">
                                 </div>
                             </div>
                         </div>';

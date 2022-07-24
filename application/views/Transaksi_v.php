@@ -495,22 +495,70 @@
         });
     }
 
-    $('#hitung').click(function() {
-        jumlah = 0;
-        pengelola = 0;
-        persentase_pengelola = parseInt($('#persentase_pengelola').val());
-        persentase_petugas = parseInt($('#persentase_petugas').val());
-        $(".row .jlh").each(function() {
-            if ($(this).val() != '') {
-                jumlah += parseInt($(this).val());
-            }
-        });
-        jumlah_pengelola = jumlah * persentase_pengelola / 100;
-        jumlah_petugas = jumlah * persentase_petugas / 100;
+    // $('#karcis_pasar, #keamanan, #parkir').on('input', function() {
+    //     // alert('test');
+    //     var karcis_pasar = $('#karcis_pasar').val();
+    //     var keamanan = $('#keamanan').val();
 
-        $('#jumlah').val(jumlah);
-        $('#jumlah_pengelola').val(jumlah_pengelola);
-        $('#jumlah_petugas').val(jumlah_petugas);
+    //     if (karcis_pasar != '' && keamanan != '') {
+    //         $('#persentase_pengelola').val('60');
+    //         $('#persentase_petugas').val('40');
+    //     } else {
+    //         $('#persentase_pengelola').val('40');
+    //         $('#persentase_petugas').val('60');
+    //     }
+
+    //     // waait one second before calculating the result.
+    //     setTimeout(function() {
+    //         jumlah = 0;
+    //         pengelola = 0;
+    //         persentase_pengelola = parseInt($('#persentase_pengelola').val());
+    //         persentase_petugas = parseInt($('#persentase_petugas').val());
+    //         $(".row .jlh").each(function() {
+    //             if ($(this).val() != '') {
+    //                 jumlah += parseInt($(this).val());
+    //             }
+    //         });
+    //         jumlah_pengelola = jumlah * persentase_pengelola / 100;
+    //         jumlah_petugas = jumlah * persentase_petugas / 100;
+
+    //         $('#jumlah').val(jumlah);
+    //         $('#jumlah_pengelola').val(jumlah_pengelola);
+    //         $('#jumlah_petugas').val(jumlah_petugas);
+    //     }, 400);
+    // });
+
+    $('#hitung').click(function() {
+
+        var karcis_pasar = $('#karcis_pasar').val();
+        var keamanan = $('#keamanan').val();
+
+        if (karcis_pasar != '' && keamanan != '') {
+            $('#persentase_pengelola').val('60');
+            $('#persentase_petugas').val('40');
+        } else {
+            $('#persentase_pengelola').val('40');
+            $('#persentase_petugas').val('60');
+        }
+
+        // waait one second before calculating the result.
+        setTimeout(function() {
+            jumlah = 0;
+            pengelola = 0;
+            persentase_pengelola = parseInt($('#persentase_pengelola').val());
+            persentase_petugas = parseInt($('#persentase_petugas').val());
+            $(".row .jlh").each(function() {
+                if ($(this).val() != '') {
+                    jumlah += parseInt($(this).val());
+                }
+            });
+            jumlah_pengelola = jumlah * persentase_pengelola / 100;
+            jumlah_petugas = jumlah * persentase_petugas / 100;
+
+            $('#jumlah').val(jumlah);
+            $('#jumlah_pengelola').val(jumlah_pengelola);
+            $('#jumlah_petugas').val(jumlah_petugas);
+        }, 400);
     });
 
 
