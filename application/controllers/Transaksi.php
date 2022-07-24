@@ -59,11 +59,25 @@ class Transaksi extends CI_Controller
             $row[] = $no;
             $row[] = 'Ke ' . $dd->minggu;
             $row[] = date('d-m-Y', strtotime($dd->tgl));
-            $row[] = $detail['nama'];
-            $row[] = $detail['kas_masuk'];
-            $row[] = $dd->persentase_pengelola . ' %';
-            $row[] = $dd->persentase_petugas . ' %';
-            $row[] = 'Rp. ' . number_format($dd->jumlah, 0, ',', '.');
+            $row[] = $detail['nama'] . '<br>
+                    Jumlah <br>' .
+                'Pengelola <br>' .
+                'Petugas <br>';
+
+            $row[] = $detail['kas_masuk'] . '<br>' .
+                '(Rp. ' . number_format($dd->jumlah, 0, ',', '.') . ')<br>' .
+                '(Rp. ' . number_format($dd->jumlah_pengelola, 0, ',', '.') . ')<br>' .
+                '(Rp. ' . number_format($dd->jumlah_petugas, 0, ',', '.') . ')<br>';
+
+
+            $row[] = $detail['enter'] . '<br><br>' .
+                $dd->persentase_pengelola . '% <br>' .
+                $dd->persentase_petugas . '% <br>';
+
+
+            // $row[] = $dd->persentase_pengelola . ' %';
+            // $row[] = $dd->persentase_petugas . ' %';
+            // $row[] = 'Rp. ' . number_format($dd->jumlah, 0, ',', '.');
 
             // add html for action
             $row[] = '<button class="btn btn-primary" title="Edit" onclick="edit(' . "'" . $dd->id_transaksi . "'" . ')">Edit</button>

@@ -42,13 +42,16 @@ class Transaksi_m extends CI_Model
         $data = array();
         $nama = '';
         $kas_masuk = '';
+        $enter = '';
         foreach ($query->result() as $row) {
             $nama .= $row->nama . '<br>';
             $kas_masuk .= 'Rp. ' . number_format($row->kas_masuk, 0, ',', '.') . '<br>';
+            $enter .= '<br>';
         }
 
         $data['nama'] = $nama;
         $data['kas_masuk'] = $kas_masuk;
+        $data['enter'] = $enter;
         return $data;
     }
 

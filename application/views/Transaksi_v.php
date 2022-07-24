@@ -41,9 +41,7 @@
                                         <th>Tanggal</th>
                                         <th>Nama</th>
                                         <th>Kas Masuk</th>
-                                        <th>Pengelola</th>
-                                        <th>Petugas</th>
-                                        <th>Jumlah</th>
+                                        <th>Persentase</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
