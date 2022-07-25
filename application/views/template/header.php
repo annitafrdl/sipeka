@@ -23,8 +23,12 @@
     <link rel="stylesheet" href="<?= base_url() ?>assets/css/components.css">
 
     <!-- JS Libraies -->
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!--  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+
+    <!-- Library Offline -->
+    <script src="<?= base_url() ?>assets/vendor/jquery-3.6.0.js"></script>
+    <script src="<?= base_url() ?>assets/vendor/sweetalert2@11.js"></script>
 
 </head>
 
