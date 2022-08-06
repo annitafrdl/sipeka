@@ -9,7 +9,7 @@ class Transaksi_m extends CI_Model
         parent::__construct();
     }
 
-    public function get_datatables($thnbln)
+    public function get_datatables($thnbln, $mingguke)
     {
         // $query = $this->db->select('*')
         //     ->from('tbl_transaksi_jenis a')
@@ -22,8 +22,11 @@ class Transaksi_m extends CI_Model
         $query = $this->db->select('*')
             ->from($this->table)
             ->where('thn_bln', $thnbln)
-            ->order_by('id_transaksi', 'desc')
+            ->where('minggu', $mingguke)
+            ->order_by('id_transaksi', 'asc')
             ->get();
+
+        // print_r($this->db->last_query());
 
         return $query->result();
     }

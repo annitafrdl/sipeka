@@ -1,4 +1,5 @@
 <!-- Main Content -->
+<script src="<?= base_url() ?>assets/js/page/forms-advanced-forms.js"></script>
 <div class="main-content">
     <section class="section">
         <div class="section-header">
@@ -27,7 +28,16 @@
                     <div class="card">
                         <div class="card-header">
                             <h4><?= $title ?> <span id="judul-tabel"></span></h4>
-                            <div class="card-header-action">
+                            <div class="card-header-action dropdown">
+                                <a href="#" data-toggle="dropdown" class="btn btn-danger dropdown-toggle">Minggu</a>
+                                <ul class="dropdown-menu dropdown-menu-sm dropdown-menu mingguke">
+                                  <li data-id="1"><a href="#" class="dropdown-item">Ke 1</a></li>
+                                  <li data-id="2"><a href="#" class="dropdown-item">Ke 2</a></li>
+                                  <li data-id="3"><a href="#" class="dropdown-item">Ke 3</a></li>
+                                  <li data-id="4"><a href="#" class="dropdown-item">Ke 4</a></li>
+                                  <li data-id="5"><a href="#" class="dropdown-item">Ke 5</a></li>
+                                </ul>
+
                                 <button class="btn btn-icon icon-left btn-primary" onclick="add_new()"> <i class="fas fa-plus"></i> Tambah </button>
                                 <button class="btn btn-icon icon-left btn-primary" onclick="reload_table()"> <i class="fas fa-sync-alt"></i> Refresh </button>
                             </div>
@@ -36,16 +46,24 @@
                             <table id="table" class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th class="text-center"> No </th>
+                                        <!-- <th class="text-center"> No </th> -->
                                         <th>Minggu</th>
                                         <th>Tanggal</th>
                                         <th>Nama</th>
                                         <th>Kas Masuk</th>
                                         <th>Persentase</th>
+                                        <th>pengelola</th> <!-- hide -->
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody> </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="3"><b>Jumlah Keseluruhan Minggu ini : </b></th>
+                                        <th id="totaljlh">Rp. 0</th>
+                                        <th colspan="3"></th>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>
@@ -130,7 +148,7 @@
                             <div class="mb-3">
                                 <label for="persentase_pengelola"> Persentase Pengelola </label>
                                 <div class="input-group-prepend">
-                                    <input type="number" class="form-control" name="persentase_pengelola" id="persentase_pengelola" required autofocus>
+                                    <input type="number" class="form-control currency" name="persentase_pengelola" id="persentase_pengelola" required autofocus>
                                     <div class="input-group-text"> % </div>
                                 </div>
                             </div>
@@ -140,7 +158,7 @@
                             <div class="mb-3">
                                 <label for="persentase_petugas"> Persentase Petugas </label>
                                 <div class="input-group-prepend">
-                                    <input type="number" class="form-control" name="persentase_petugas" id="persentase_petugas" required autofocus>
+                                    <input type="number" class="form-control currency" name="persentase_petugas" id="persentase_petugas" required autofocus>
                                     <div class="input-group-text"> % </div>
                                 </div>
                             </div>
@@ -151,7 +169,7 @@
                                 <label for="pengeluaran"> Pengeluaran </label>
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"> Rp. </div>
-                                    <input type="number" class="form-control" name="pengeluaran" id="pengeluaran">
+                                    <input type="number" class="form-control currency" name="pengeluaran" id="pengeluaran">
                                 </div>
                             </div>
                         </div>
@@ -161,7 +179,7 @@
                                 <label for="jumlah"> Jumlah </label>
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"> Rp. </div>
-                                    <input type="number" class="form-control" name="jumlah" id="jumlah" readonly>
+                                    <input type="number" class="form-control currency" name="jumlah" id="jumlah" readonly>
                                 </div>
                             </div>
                         </div>
@@ -171,7 +189,7 @@
                                 <label for="jumlah_pengelola"> Pengelola </label>
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"> Rp. </div>
-                                    <input type="number" class="form-control" name="jumlah_pengelola" id="jumlah_pengelola" readonly>
+                                    <input type="number" class="form-control currency" name="jumlah_pengelola" id="jumlah_pengelola" readonly>
                                 </div>
                             </div>
                         </div>
@@ -181,7 +199,7 @@
                                 <label for="jumlah_petugas"> Petugas </label>
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"> Rp. </div>
-                                    <input type="number" class="form-control" name="jumlah_petugas" id="jumlah_petugas" readonly>
+                                    <input type="number" class="form-control currency" name="jumlah_petugas" id="jumlah_petugas" readonly>
                                 </div>
                             </div>
                         </div>
@@ -387,7 +405,7 @@
 
                 if (data.status == '00') {
                     //if success reload ajax table
-                    getDatatable(thn_bln);
+                    getDatatable(thn_bln, 1);
                     Swal.fire('Good job!', data.mess, 'success');
                 } else {
                     Swal.fire('Yaahh...', data.mess, 'warning');
@@ -471,7 +489,7 @@
     }
     getList();
 
-    function getDatatable(thnbln) {
+    function getDatatable(thnbln, mingguke) {
         $('#judul-tabel').html(thnbln);
         $('#i_thn_bln').val(thnbln);
         thn_bln = thnbln;
@@ -486,14 +504,53 @@
                 "url": "<?php echo base_url($module . 'ajax_list') ?>",
                 "type": "POST",
                 "data": {
-                    thnbln: thnbln
+                    thnbln: thnbln,
+                    mingguke: mingguke,
                 },
 
-                "dataSrc": ""
+                "dataSrc": "",
+            },
+
+            "columnDefs": [{
+                    "targets": [5],
+                    "visible": false,
+                },
+            ],
+
+            footerCallback: function(row, data, start, end, display) {
+                var api = this.api();
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function(i) {
+                    return typeof i === 'string' ? i.replace(/[\$.]/g, '') * 1 : typeof i === 'number' ? i :
+                        0;
+                };
+
+                // Total over all pages
+                total = api
+                    .column(5, {
+                        page: 'current'
+                    })
+                    .data()
+                    .reduce(function(a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+
+                // Update footer
+                $('#totaljlh').html('Rp. ' + number_format(parseFloat(total), 0, '', '.'));
+                // $(api.column(4).footer()).html(number_format(parseFloat(total), 0, '', '.'));
+
             },
 
         });
     }
+
+    $(".mingguke li").on("click", function(){
+        var dataId = $(this).attr("data-id");
+        // alert("The data-id of clicked item is: " + dataId);
+        getDatatable(thn_bln, dataId)
+    });
 
     // $('#karcis_pasar, #keamanan, #parkir').on('input', function() {
     //     // alert('test');
@@ -561,6 +618,21 @@
         }, 400);
     });
 
+    function number_format(number, decimals, dec_point, thousands_sep) {
+        number = number.toFixed(decimals);
+
+        var nstr = number.toString();
+        nstr += '';
+        x = nstr.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? dec_point + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+
+        while (rgx.test(x1))
+            x1 = x1.replace(rgx, '$1' + thousands_sep + '$2');
+
+        return x1 + x2;
+    }
 
     // $(document).ready(function() {
     //     // datatable

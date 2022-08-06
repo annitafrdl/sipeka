@@ -46,7 +46,8 @@ class Transaksi extends CI_Controller
     public function ajax_list()
     {
         $thnbln = $this->input->post('thnbln');
-        $list = $this->models->get_datatables($thnbln);
+        $mingguke = $this->input->post('mingguke');
+        $list = $this->models->get_datatables($thnbln, $mingguke);
         // print_r($list);
 
         $data = array();
@@ -56,7 +57,7 @@ class Transaksi extends CI_Controller
             $row = array();
             $detail = $this->models->get_detail($dd->id_transaksi);
 
-            $row[] = $no;
+            // $row[] = $no;
             $row[] = 'Ke ' . $dd->minggu;
             $row[] = date('d-m-Y', strtotime($dd->tgl));
             $row[] = $detail['nama'] . '<br>
@@ -73,6 +74,9 @@ class Transaksi extends CI_Controller
             $row[] = $detail['enter'] . '<br><br>' .
                 $dd->persentase_pengelola . '% <br>' .
                 $dd->persentase_petugas . '% <br>';
+
+
+            $row[] = $dd->jumlah_pengelola;
 
 
             // $row[] = $dd->persentase_pengelola . ' %';
@@ -168,7 +172,7 @@ class Transaksi extends CI_Controller
                                 <label for="kas_masuk"> Kas Masuk ' . $dd->nama . ' </label>
                                 <div class="input-group-prepend">
                                     <div class="input-group-text"> Rp. </div>
-                                    <input type="number" class="form-control jlh" name="kas_masuk[]" id="' . str_replace(' ', '_', strtolower($dd->nama)) . '">
+                                    <input type="number" class="form-control jlh currency" name="kas_masuk[]" id="' . str_replace(' ', '_', strtolower($dd->nama)) . '">
                                 </div>
                             </div>
                         </div>';

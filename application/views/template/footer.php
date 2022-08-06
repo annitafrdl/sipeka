@@ -23,6 +23,10 @@
 <script src="<?= base_url() ?>assets/modules/datatables/DataTables-1.10.16/js/dataTables.bootstrap4.min.js"></script>
 <script src="<?= base_url() ?>assets/modules/datatables/Select-1.2.4/js/dataTables.select.min.js"></script>
 <script src="<?= base_url() ?>assets/modules/jquery-ui/jquery-ui.min.js"></script>
+<script src="<?= base_url() ?>assets/modules/cleave-js/dist/cleave.min.js"></script>
+<script src="<?= base_url() ?>assets/modules/cleave-js/dist/addons/cleave-phone.us.js"></script>
+
+
 
 <!-- Template JS File -->
 <script src="<?= base_url() ?>assets/js/scripts.js"></script>
