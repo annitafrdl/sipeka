@@ -7,117 +7,146 @@
 
         <div class="section-body">
             <div class="row">
+                <div class="col-md-6">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-primary">
+                            <i class="far fa-user"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Total Admin</h4>
+                            </div>
+                            <div class="card-body">
+                                <?= $totadmin ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card card-statistic-1">
+                        <div class="card-icon bg-success">
+                            <i class="fas fa-money-bill"></i>
+                        </div>
+                        <div class="card-wrap">
+                            <div class="card-header">
+                                <h4>Total Pendapatan </h4>
+                            </div>
+                            <div class="card-body">
+                                <span id="bumdes"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Basic DataTables</h4>
+                            <h4>Total Pendapatan Bulan Berjalan</h4>
                             <div class="card-header-action">
-                                <button class="btn btn-icon icon-left btn-primary" onclick="add_new()"> <i class="fas fa-plus"></i> Tambah </button>
                                 <button class="btn btn-icon icon-left btn-primary" onclick="reload_table()"> <i class="fas fa-sync-alt"></i> Refresh </button>
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped" id="table-1">
-                                    <thead>
+                            <?php if ($reports) { ?>
+                                <?php
+                                // echo '<pre>';
+                                // print_r($reports);
+                                // echo '</pre>';
+                                $pemasukan = 0;
+                                $pengeluaran = 0;
+                                $jumlah = 0;
+                                $pengelola = 0;
+                                $bumdes = 0;
+
+                                foreach ($reports as $key => $report) {
+                                    // if ($key = 1) {
+                                    $totaljlh = '0';
+                                    $jlh_pengluaran = '0';
+                                    $minggu = 'Minggu ke ' . $key;
+                                    echo '<div class="table-responsive">
+                                                <table id="table" class="table table-striped" style="width: 100%;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Tanggal</th>
+                                                        <th>Nama</th>
+                                                        <th>Kas Masuk</th>
+                                                        <th>Persentase</th>
+                                                    </tr>
+                                                </thead>';
+
+                                    foreach ($report as $row) {
+                                        $totaljlh += $row['jumlah_pengelola'];
+                                        $jlh_pengluaran += $row['pengeluaran'];
+
+                                        echo '<tbody>
+                                                    <tr>
+                                                        <td>' . date('d-m-Y', strtotime($row['tgl'])) . '</td>
+                                                        <td>' . $row['nama'] . ' <br>  Jumlah <br> Pengelola <br>Petugas <br></td>
+                                                        <td>' . $row['kas_masuk'] . '<br> (Rp. ' . number_format($row['jumlah'], 0, ',', '.') . ')<br> 
+                                                        (Rp. ' . number_format($row['jumlah_pengelola'], 0, ',', '.') . ')<br>
+                                                        (Rp. ' . number_format($row['jumlah_petugas'], 0, ',', '.') . ')<br>
+                                                        </td>
+                                                        <td>' . $row['enter'] . '<br><br>' . $row['persentase_pengelola'] . '% <br>' . $row['persentase_petugas'] . '% <br><br></td>
+                                                    </tr> 
+                                                    </tbody>';
+                                    }
+                                    $pemasukan += $totaljlh; // perjumlahan pemasukan dalam per minggu
+                                    $pengeluaran += $jlh_pengluaran; // perjumlahan pengeluaran dalam per minggu
+                                    $jumlah = $pemasukan - $pengeluaran; // perjumlahan pemasukan - pengeluaran dalam per minggu
+
+                                    // jumlah 40 %
+                                    $pengelola = $jumlah * 0.4;
+                                    $bumdes = $jumlah * 0.6;
+
+                                    echo '<tfoot>
+                                                <tr>
+                                                <th colspan="3"><b>Jumlah Keseluruhan ' . $minggu . ' : </b></th>
+                                                <th>Rp. ' . number_format($totaljlh, 0, ',', '.') . '</th>
+                                                <th colspan="2"></th>
+                                                </tr>
+                                            </tfoot>
+                                            </table>
+                                            </div>';
+                                    // }
+                                ?>
+
+                                <?php } ?>
+
+                                <?php if ($this->input->get('minggu') == 0) { ?>
+                                    <p><b>Rekap Bulan Tahun : Rp. <?= $this->input->get('thnbln') ?></b> </p>
+                                    <table style="width: 350px;">
                                         <tr>
-                                            <th class="text-center">
-                                                #
-                                            </th>
-                                            <th>Task Name</th>
-                                            <th>Progress</th>
-                                            <th>Members</th>
-                                            <th>Due Date</th>
-                                            <th>Status</th>
-                                            <th>Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>
-                                                1
-                                            </td>
-                                            <td>Create a mobile app</td>
-                                            <td class="align-middle">
-                                                <div class="progress" data-height="4" data-toggle="tooltip" title="100%">
-                                                    <div class="progress-bar bg-success" data-width="100%"></div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-5.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Wildan Ahdian">
-                                            </td>
-                                            <td>2018-01-20</td>
-                                            <td>
-                                                <div class="badge badge-success">Completed</div>
-                                            </td>
-                                            <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                2
-                                            </td>
-                                            <td>Redesign homepage</td>
-                                            <td class="align-middle">
-                                                <div class="progress" data-height="4" data-toggle="tooltip" title="0%">
-                                                    <div class="progress-bar" data-width="0"></div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-1.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Nur Alpiana">
-                                                <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-3.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Hariono Yusup">
-                                                <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-4.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Bagus Dwi Cahya">
-                                            </td>
-                                            <td>2018-04-10</td>
-                                            <td>
-                                                <div class="badge badge-info">Todo</div>
-                                            </td>
-                                            <td><a href="#" class="btn btn-secondary">Detail</a></td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                3
-                                            </td>
-                                            <td>Backup database</td>
-                                            <td class="align-middle">
-                                                <div class="progress" data-height="4" data-toggle="tooltip" title="70%">
-                                                    <div class="progress-bar bg-warning" data-width="70%"></div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-1.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
-                                                <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-2.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Hasan Basri">
-                                            </td>
-                                            <td>2018-01-29</td>
-                                            <td>
-                                                <div class="badge badge-warning">In Progress</div>
-                                            </td>
-                                            <td><a href="#" class="btn btn-secondary">Detail</a></td>
+                                            <td>Pemasukan </td>
+                                            <td> : </td>
+                                            <td> Rp. <?= number_format($pemasukan, 0, ',', '.') ?> </td>
                                         </tr>
                                         <tr>
-                                            <td>
-                                                4
-                                            </td>
-                                            <td>Input data</td>
-                                            <td class="align-middle">
-                                                <div class="progress" data-height="4" data-toggle="tooltip" title="100%">
-                                                    <div class="progress-bar bg-success" data-width="100%"></div>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-2.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Rizal Fakhri">
-                                                <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-5.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Isnap Kiswandi">
-                                                <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-4.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Yudi Nawawi">
-                                                <img alt="image" src="<?= base_url() ?>assets/img/avatar/avatar-1.png" class="rounded-circle" width="35" data-toggle="tooltip" title="Khaerul Anwar">
-                                            </td>
-                                            <td>2018-01-16</td>
-                                            <td>
-                                                <div class="badge badge-success">Completed</div>
-                                            </td>
-                                            <td><a href="#" class="btn btn-secondary">Detail</a></td>
+                                            <td>Pengeluaran </td>
+                                            <td> : </td>
+                                            <td> Rp. <?= number_format($pengeluaran, 0, ',', '.') ?> </td>
                                         </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                        <tr>
+                                            <td>Jumlah </td>
+                                            <td> : </td>
+                                            <td> Rp. <?= number_format($jumlah, 0, ',', '.') ?> </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pengelola (40%) </td>
+                                            <td> : </td>
+                                            <td> Rp. <?= number_format($pengelola, 0, ',', '.') ?> </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Bumdes (60%) </td>
+                                            <td> : </td>
+                                            <td> Rp. <?= number_format($bumdes, 0, ',', '.') ?> </td>
+                                        </tr>
+                                    </table>
+                                <?php } ?>
+                                <script>
+                                    $('#bumdes').text('Rp. <?= number_format($bumdes, 0, ',', '.') ?>');
+                                </script>
+                            <?php } ?>
                         </div>
                     </div>
                 </div>

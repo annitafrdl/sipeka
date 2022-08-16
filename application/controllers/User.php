@@ -44,7 +44,7 @@ class User extends CI_Controller
             $row[] = $dd->alamat;
             $row[] = $dd->nohp;
             $row[] = $dd->status;
-            $row[] = $dd->role;
+            $row[] = $dd->role == '0' ? 'Admin' : 'User';
 
             // add html for action
             $row[] = '<button class="btn btn-primary" title="Edit" onclick="edit(' . "'" . $dd->id_user . "'" . ')">Edit</button>
@@ -66,7 +66,7 @@ class User extends CI_Controller
             'password' => $this->input->post('password'),
             'alamat' => $this->input->post('alamat'),
             'nohp' => $this->input->post('nohp'),
-            'role' => $this->input->post('role'),
+            'role' => '0',
             'status' => $this->input->post('status'),
         );
 

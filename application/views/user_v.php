@@ -107,7 +107,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                             <div class="mb-3">
                                 <label for="role">User Role</label>
                                 <select name="role" id="role" class="form-control" required>
@@ -116,7 +116,7 @@
                                     <option value="1">User</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
 
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -165,7 +165,7 @@
         $('.modal-title').text('Edit User'); // Set title to Bootstrap modal title
 
         $('#password').attr('required', false);
-        $('#password_confirm').attr('required', false);
+        $('#password2').attr('required', false);
 
         //Ajax Load data from ajax
         $.ajax({
@@ -229,6 +229,11 @@
         e.preventDefault();
         var form = $('#form')[0];
         var data = new FormData(form);
+
+        if ($('#password').val() != $('#password2').val()) {
+            Swal.fire('Ooppss :(', 'Password tidak sama', 'error');
+            return false;
+        }
 
         $('#btnSave').text('Sedang Proses, Mohon tunggu...'); //change button text
         $('#btnSave').attr('disabled', true); //set button disable
