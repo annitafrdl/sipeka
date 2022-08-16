@@ -31,11 +31,11 @@
                             <div class="card-header-action dropdown">
                                 <a href="#" data-toggle="dropdown" class="btn btn-danger dropdown-toggle">Minggu</a>
                                 <ul class="dropdown-menu dropdown-menu-sm dropdown-menu mingguke">
-                                  <li data-id="1"><a href="#" class="dropdown-item">Ke 1</a></li>
-                                  <li data-id="2"><a href="#" class="dropdown-item">Ke 2</a></li>
-                                  <li data-id="3"><a href="#" class="dropdown-item">Ke 3</a></li>
-                                  <li data-id="4"><a href="#" class="dropdown-item">Ke 4</a></li>
-                                  <li data-id="5"><a href="#" class="dropdown-item">Ke 5</a></li>
+                                    <li data-id="1"><a href="#" class="dropdown-item">Ke 1</a></li>
+                                    <li data-id="2"><a href="#" class="dropdown-item">Ke 2</a></li>
+                                    <li data-id="3"><a href="#" class="dropdown-item">Ke 3</a></li>
+                                    <li data-id="4"><a href="#" class="dropdown-item">Ke 4</a></li>
+                                    <li data-id="5"><a href="#" class="dropdown-item">Ke 5</a></li>
                                 </ul>
 
                                 <button class="btn btn-icon icon-left btn-primary" onclick="add_new()"> <i class="fas fa-plus"></i> Tambah </button>
@@ -148,7 +148,7 @@
                             <div class="mb-3">
                                 <label for="persentase_pengelola"> Persentase Pengelola </label>
                                 <div class="input-group-prepend">
-                                    <input type="number" class="form-control currency" name="persentase_pengelola" id="persentase_pengelola" required autofocus>
+                                    <input type="number" class="form-control" name="persentase_pengelola" id="persentase_pengelola" required autofocus>
                                     <div class="input-group-text"> % </div>
                                 </div>
                             </div>
@@ -158,7 +158,7 @@
                             <div class="mb-3">
                                 <label for="persentase_petugas"> Persentase Petugas </label>
                                 <div class="input-group-prepend">
-                                    <input type="number" class="form-control currency" name="persentase_petugas" id="persentase_petugas" required autofocus>
+                                    <input type="number" class="form-control" name="persentase_petugas" id="persentase_petugas" required autofocus>
                                     <div class="input-group-text"> % </div>
                                 </div>
                             </div>
@@ -232,6 +232,35 @@
 <script type="text/javascript">
     var save_method;
     var table, thn_bln;
+
+    // $('input.currency').on('keyup', function(e) {
+    //     var value = $(this).val();
+    //     // value = value.replace(/[^0-9]/g, '');
+    //     // value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    //     hasil = formatRupiah(value);
+    //     $(this).val(hasil);
+    // });
+
+    // $(".currency").inputmask("Rp. 999.999.999.999.999", {
+    //     numericInput: !0,
+    // });
+
+    /* Fungsi */
+    function formatRupiah(angka, prefix) {
+        var number_string = angka.replace(/[^,\d]/g, '').toString(),
+            split = number_string.split(','),
+            sisa = split[0].length % 3,
+            rupiah = split[0].substr(0, sisa),
+            ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+        if (ribuan) {
+            separator = sisa ? '.' : '';
+            rupiah += separator + ribuan.join('.');
+        }
+
+        rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+        return prefix == undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+    }
 
     function reload_table() {
         table.ajax.reload(null, false); //reload datatable ajax
@@ -512,10 +541,9 @@
             },
 
             "columnDefs": [{
-                    "targets": [5],
-                    "visible": false,
-                },
-            ],
+                "targets": [5],
+                "visible": false,
+            }, ],
 
             footerCallback: function(row, data, start, end, display) {
                 var api = this.api();
@@ -546,7 +574,7 @@
         });
     }
 
-    $(".mingguke li").on("click", function(){
+    $(".mingguke li").on("click", function() {
         var dataId = $(this).attr("data-id");
         // alert("The data-id of clicked item is: " + dataId);
         getDatatable(thn_bln, dataId)

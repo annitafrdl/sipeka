@@ -16,13 +16,20 @@ class Laporan extends CI_Controller
 
     public function index()
     {
-    	$thnbln = isset($_GET['thnbln']);
-    	$minggu = isset($_GET['minggu']);
+        $thnbln = $this->input->get('thnbln');
+        $minggu = $this->input->get('minggu');
 
         $data['title'] = 'Laporan transaksi';
         $data['module'] = 'laporan/';
 
-        $data['reports'] = $this->models->get_datatables($thnbln, $minggu);
+        $result = $this->models->get_datatables($thnbln, $minggu);
+
+        // group by minggu
+        $group = array();
+        foreach ($result as $key => $value) {
+            $group[$value['minggu']][] = $value;
+        }
+        $data['reports'] = $group;
 
         // templates
         $this->load->view('template/header', $data);
@@ -83,7 +90,6 @@ class Laporan extends CI_Controller
 
     public function getThnBln()
     {
-    	echo json_encode($this->models->getThnBln());
+        echo json_encode($this->models->getThnBln());
     }
-
 }

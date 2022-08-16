@@ -29,6 +29,7 @@
     <!-- Library Offline -->
     <script src="<?= base_url() ?>assets/vendor/jquery-3.6.0.js"></script>
     <script src="<?= base_url() ?>assets/vendor/sweetalert2@11.js"></script>
+    <script src="<?= base_url() ?>assets/vendor/jquery.inputmask.bundle.min.js"></script>
 
 </head>
 

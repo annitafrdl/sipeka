@@ -76,6 +76,7 @@ $query_builder = TRUE;
 $db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'localhost',
+	'port' => '3374',
 	'username' => 'root',
 	'password' => '',
 	'database' => 'db_sipeka',

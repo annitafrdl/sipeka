@@ -187,7 +187,7 @@ class Transaksi_m extends CI_Model
     {
         $query = $this->db->select('*')
             ->from('jenis_kas')
-            ->order_by('id_jenis_kas', 'desc')
+            ->order_by('id_jenis_kas', 'asc')
             ->get();
 
         return $query->result();
